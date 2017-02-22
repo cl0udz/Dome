@@ -29,8 +29,6 @@ function _M.sign( mark )
     local host = ngx.req.get_headers()['Host']
     if host == nil then
         host = ''
-    else
-        ngx.log(ngx.ERR,host)
     end
     local mystr = 'DOME' .. ngx.var.remote_addr .. host .. ua .. mark .. DomeConfig.configs["encrypt_seed"]
     local sign = ngx.md5(mystr)
