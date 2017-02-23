@@ -17,8 +17,8 @@ function _M.checkDB(client_cookie)
         else
             -- clickDButil.clear(client_cookie)
             if authcount ~= 0 then
-                clickDButil.clear_DBrecord(client_cookie)
-                -- clickDButil.dec_authcount(client_cookie)
+                clickDButil.clear_reqcount(client_cookie)
+                clickDButil.dec_authcount(client_cookie)
                 return false
             else
                 return true

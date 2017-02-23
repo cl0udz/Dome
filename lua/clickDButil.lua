@@ -90,9 +90,9 @@ function _M.save_DBrecord(cookie)
     end
 end
 
-function _M.clear_DBrecord(cookie)
+function _M.clear_reqcount(cookie)
     local db = _M.connect_mysql()
-    local sqlstr = "delete from click where cookie = '" .. cookie .. "'"
+    local sqlstr = "update click set reqcount = 0 where cookie='" .. cookie .. "'"
     local res, err, errcode, sqlstate = db:query(sqlstr)
     local ok, err = db:close()
 
