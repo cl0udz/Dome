@@ -96,6 +96,7 @@ function _M.modify_javascript_cookie()
     myhtml = util.string_replace( myhtml,'INFOURI',redirect_to, 1 )
     -- html = string.gsub( html,".*", myhtml )
     ngx.arg[1] = myhtml
+    ngx.arg[2] = true
 
 end
 
