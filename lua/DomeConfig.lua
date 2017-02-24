@@ -36,14 +36,7 @@ _M.configs['matcher'] = {
 
 _M.configs["browser_verify_enable"] = true
 _M.configs["js_cookie_enable"] = true
-_M.configs["browser_verify_rule"] = {
-	{
-		["matcher"] = 'all_request', 
-		["type"] = {'cookie','javascript'}, 
-		["enable"] = true 
-	},
-}
-
+_M.configs["set_cookie_enable"] = true
 
 _M.configs["defend_scan_enable"] = false                                        
 _M.configs["defend_scan_rule"] = {

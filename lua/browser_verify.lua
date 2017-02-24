@@ -139,28 +139,13 @@ function _M.filter()
     end
     
     local matcher_list = DomeConfig.configs['matcher']
-    for i,rule in ipairs( DomeConfig.configs["browser_verify_rule"] ) do
-        local enable = rule['enable']
-        if enable == true then
-            local verify_cookie,verify_javascript = false,false
-            for idx,verify_type in ipairs( rule['type']) do
-                if verify_type == 'cookie' then
-                    verify_cookie = true
-                elseif verify_type == 'javascript' then
-                    verify_javascript = true
-                end
-            end
-
-            if verify_cookie == true then
-                _M.verify_cookie()
-            end
-            
-            if verify_javascript == true then
-                _M.verify_javascript()
-            end
-            
-            return
-        end
+    local verify_javascript = DomeConfig.configs["js_cookie_enable"]
+    local verify_cookie = DomeConfig.configs["set_cookie_enable"]
+    if verify_cookie == true then
+        _M.verify_cookie()
+    end
+    if verify_javascript == true then
+        _M.verify_javascript()
     end
 end
 
