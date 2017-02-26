@@ -55,12 +55,12 @@ end
 function _M.modify_javascript_cookie()
     local sign = util.sign('javascript')
     local html = ngx.arg[1] or ""
+    local ishtml = string.find(html,"head")
     local myhtml = nil
     local headers = ngx.resp.get_headers()  
     local accept = headers['content-type']
-    -- ngx.log(ngx.ERR,accept)
     if accept ~= nil then
-        if string.find(accept,'image') ~= nil or string.find(accept,'css') ~=nil  or string.find(accept,'javascript') ~=nil then
+        if string.find(accept,'image') ~= nil or string.find(accept,'css') ~=nil  or string.find(accept,'javascript') ~=nil  or ishtml == nil then
             return
         end
     end
