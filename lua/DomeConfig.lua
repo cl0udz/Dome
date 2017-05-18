@@ -17,9 +17,16 @@ _M.configs['cookie_prefix'] = "dome"
 _M.configs['encrypt_seed'] = "20161213"
 
 -- set the threshold for scan
-_M.configs['timethreshold'] = 300     -- second
-_M.configs['countthreshold'] = 1000000000000    -- times
-_M.configs['max_ajax_req_per_page'] = 1000
+_M.configs['timethreshold'] = 3000000000    -- second
+_M.configs['countthreshold'] = 300000000000000    -- times
+_M.configs['max_ajax_req_per_page'] = 300
+
+-- 设置资源文件访问的阈值,static_access_total表示访问的总次数，static_access_min表示需要访问资源文件的数目
+-- 如static_access_min=100，static_access_min=10就表示在访问100次网站之后，最少需要访问资源文件10次
+-- static_access_enable，用来设定是否启用基于资源的扫描器检测
+_M.configs['static_access_enable'] = true
+_M.configs['static_access_total'] = 100
+_M.configs['static_access_min'] = 10
 
 
 _M.configs["db"] = {
@@ -35,8 +42,8 @@ _M.configs['matcher'] = {
 }
 
 _M.configs["browser_verify_enable"] = true
-_M.configs["js_cookie_enable"] = true
-_M.configs["set_cookie_enable"] = true
+_M.configs["js_cookie_enable"] = false
+_M.configs["set_cookie_enable"] = false
 
 _M.configs["defend_scan_enable"] = false                                        
 _M.configs["defend_scan_rule"] = {
@@ -47,7 +54,7 @@ _M.configs["defend_scan_rule"] = {
             "Java/1.8.0_102","Python-urllib","w3af","commix/1.2","Chrome/41","masscan","nmap","spider","HTTrack","harvest",
             "audit","dirbuster","pangolin","nmap","sqln","scan","hydra","Parser","libwww","BBBike",
         },
-        ["enable"] = true
+        ["enable"] = false
     },
     ["args"] = {
         ["matcher"] = 'all_request',
@@ -57,6 +64,6 @@ _M.configs["defend_scan_rule"] = {
 }
 
 
-_M.configs["click_verify_enable"] = true
+_M.configs["click_verify_enable"] = false
 
 return _M

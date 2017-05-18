@@ -32,6 +32,31 @@ function _M.modify()
 
 end
 
+-- 用于检测资源文件的访问情况
+function _M.count_visited_static_file()
+    local static_access_enable = DomeConfig.configs["static_access_enable"]
+    if static_access_enable == true then
+        local sign = util.sign('javascript')
+        local visited_static_file_count = ngx.shared.visited_static_file_count
+        local visited_count = visited_static_file_count:get(sign)
+        -- 初始化变量
+        if visited_count == nil then
+            visited_count = 1
+        end
+
+        
+        local html = ngx.arg[1] or ""
+        local headers = ngx.resp.get_headers()  
+        local accept = headers['content-type']
+        if accept ~= nil then
+            if string.find(accept,'image') ~= nil or string.find(accept,'css') ~=nil  or string.find(accept,'javascript') ~=nil then
+                visited_count = visited_count+1
+            end
+        end
+        visited_static_file_count:set(sign,visited_count)
+    end
+end
+
 function _M.modify_js_hijack()
     local html = ngx.arg[1] or ""
     local ishtml = string.find(html,"head")

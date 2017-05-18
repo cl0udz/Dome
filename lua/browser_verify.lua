@@ -35,6 +35,33 @@ function _M.validate_cookie(client_cookie)
     end   
 end
 
+function _M.verify_static_access()
+    local sign = util.sign('javascript')
+    local result = _M.validate_cookie(sign)
+    if result == true then
+        ngx.exit(403)
+    end
+    -- 计算资源的访问情况
+    local visited_static_file_count = ngx.shared.visited_static_file_count
+    visited_count = visited_static_file_count:get(sign)
+    if visited_count == nil then
+        return false
+    end
+    local result,cookie = clientsutil.cookie_exist(sign)
+    if result then
+        local static_access_total = DomeConfig.configs['static_access_total']
+        local static_access_min = DomeConfig.configs['static_access_min']
+        local count = cookie["count"]
+        if count >= static_access_total then
+            -- 访问资源文件的次数少于阈值设定的次数
+            if visited_count < static_access_min then
+                ngx.log(ngx.ERR, "detect the static access", static_access_min)
+                ngx.exit(403)
+            end
+        end
+    end
+end
+
 function _M.verify_cookie()
     local sign = util.sign('cookie')
     local result = _M.validate_cookie(sign)
@@ -141,11 +168,15 @@ function _M.filter()
     local matcher_list = DomeConfig.configs['matcher']
     local verify_javascript = DomeConfig.configs["js_cookie_enable"]
     local verify_cookie = DomeConfig.configs["set_cookie_enable"]
+    local static_access_enable = DomeConfig.configs["static_access_enable"]
     if verify_cookie == true then
         _M.verify_cookie()
     end
     if verify_javascript == true then
         _M.verify_javascript()
+    end
+    if static_access_enable == true then
+        _M.verify_static_access()
     end
 end
 
