@@ -1,7 +1,6 @@
 -- -*- coding: utf-8 -*-
 -- @Date    : 2017-02-19 23:00
--- @Author  : Alexa (me@spoock.com)
-
+-- @Author  : Spoock(me@spoock.com)   cl0udz(jw.huang@whu.edu.cn)
 local _M = {}
 
 --The md5 of config string
