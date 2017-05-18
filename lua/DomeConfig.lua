@@ -9,7 +9,17 @@ _M.config_hash = nil
 _M["configs"] = {}
 
 --------------default config------------
+-- 静态文件的配置
 _M.configs["static"] = "/usr/local/openresty/nginx/conf/lua/support/"
+
+-- 数据库的配置
+_M.configs["db"] = {
+    ["host"] = "127.0.0.1", 
+    ["port"] = "3306", 
+    ["database"] = "waf",
+    ["user"]="root",
+    ["password"]="123456",
+}
 
 _M.configs["readonly"] = false
 _M.configs['cookie_prefix'] = "dome"
@@ -28,21 +38,15 @@ _M.configs['static_access_total'] = 100
 _M.configs['static_access_min'] = 10
 
 
-_M.configs["db"] = {
-    ["host"] = "127.0.0.1", 
-    ["port"] = "3306", 
-    ["database"] = "waf",
-    ["user"]="root",
-    ["password"]="123456",
-}
+-- 基于鼠标点击时间的检测
+_M.configs["click_verify_enable"] = false
 
-_M.configs['matcher'] = {
-    ["all_request"] = {},
-}
-
-_M.configs["browser_verify_enable"] = true
+-- 基于 js_cookie 的检测
 _M.configs["js_cookie_enable"] = false
+
+-- 基于 set_cookie 的检测
 _M.configs["set_cookie_enable"] = false
+
 
 _M.configs["defend_scan_enable"] = false                                        
 _M.configs["defend_scan_rule"] = {
@@ -62,7 +66,5 @@ _M.configs["defend_scan_rule"] = {
     },
 }
 
-
-_M.configs["click_verify_enable"] = false
 
 return _M

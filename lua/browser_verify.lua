@@ -1,7 +1,6 @@
 local _M = {}
 
 local DomeConfig = require "DomeConfig"
-local request_tester = require "request_tester"
 local mysqlutil = require "mysqlutil"
 local clientsutil = require "clientsutil"
 local util = require "util"
@@ -55,7 +54,6 @@ function _M.verify_static_access()
         if count >= static_access_total then
             -- 访问资源文件的次数少于阈值设定的次数
             if visited_count < static_access_min then
-                ngx.log(ngx.ERR, "detect the static access", static_access_min)
                 ngx.exit(403)
             end
         end
@@ -104,53 +102,6 @@ function _M.IECookieCheck()
     return 0
 end
 
--- function _M.verify_javascript()
---     local sign = util.sign('javascript')
---     local result = _M.validate_cookie(sign)
---     if result then
---         ngx.exit(403)
---     end
---     if ngx.var.http_cookie ~= nil then
---         if string.find( ngx.var.http_cookie , sign) ~= nil then
---             if _M.IECookieCheck() == 1 then
---                 return
---             end
---         end
---     end
-
-
---     if _M.verify_javascript_html == nil then
---         local path = "/usr/local/openresty/nginx/conf/lua/support/verify_javascript.html"
---         f = io.open( path, 'r' )
---         if f ~= nil then
---             _M.verify_javascript_html = f:read("*all")
---             f:close()
---         end
---     end
-    
---     local cookie_prefix = DomeConfig.configs['cookie_prefix']
-
---     local redirect_to = nil
---     local html = _M.verify_javascript_html
-
---     html = string.gsub( html,'INFOCOOKIE',sign )
---     html = string.gsub( html,'COOKIEPREFIX',cookie_prefix )
-
---     if ngx.var.args ~= nil then
---         redirect_to =  ngx.var.scheme.."://"..ngx.var.http_host..ngx.var.uri.."?"..ngx.var.args , ngx.HTTP_MOVED_TEMPORARILY
---     else
---         redirect_to =  ngx.var.scheme.."://"..ngx.var.http_host..ngx.var.uri , ngx.HTTP_MOVED_TEMPORARILY
---     end
-
---     html = util.string_replace( html,'INFOURI',redirect_to, 1 )
-    
---     ngx.header.content_type = "text/html"
---     ngx.header.charset = "utf-8"
---     ngx.say( html )
-    
---     ngx.exit(200)
--- end
-
 
 function _M.verify_javascript()
     local sign = util.sign('javascript')
@@ -161,10 +112,6 @@ function _M.verify_javascript()
 end
 
 function _M.filter()
-    if DomeConfig.configs["browser_verify_enable"] ~= true then
-        return
-    end
-    
     local matcher_list = DomeConfig.configs['matcher']
     local verify_javascript = DomeConfig.configs["js_cookie_enable"]
     local verify_cookie = DomeConfig.configs["set_cookie_enable"]
